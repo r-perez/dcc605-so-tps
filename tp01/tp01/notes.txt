@@ -1,0 +1,7 @@
+https://en.wikipedia.org/wiki/Standard_streams
+https://linux.die.net/man/2/open
+https://linux.die.net/man/2/pipe
+https://linux.die.net/man/2/fork
+https://linux.die.net/man/2/close
+https://linux.die.net/man/3/exec
+
