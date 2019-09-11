@@ -75,7 +75,7 @@ runcmd(struct cmd *cmd)
     /* MARK START task2
      * TAREFA2: Implemente codigo abaixo para executar
      * comandos simples. */
-    char *arg1 = "/bin/";
+    char arg1[] = "/bin/";
     strcat(arg1,ecmd->argv[0]);
     char *ptr[] = {arg1,ecmd->argv[1],NULL};
     execvp(ptr[0],ptr);
@@ -83,16 +83,20 @@ runcmd(struct cmd *cmd)
     break;
 
   case '>':
-    printf("REDIR >>>\n");
-    break;
-  case '<':
     rcmd = (struct redircmd*)cmd;
     /* MARK START task3
      * TAREFA3: Implemente codigo abaixo para executar
      * comando com redirecionamento. */
-    fprintf(stderr, "redir nao implementado\n");
-    /* MARK END task3 */
+    freopen(rcmd->file, "w", stdout);
     runcmd(rcmd->cmd);
+    freopen("/dev/tty", "w", stdout);
+    break;
+  case '<':
+    rcmd = (struct redircmd*)cmd;
+    freopen(rcmd->file, "r", stdin);
+    runcmd(rcmd->cmd);
+    freopen("/dev/tty", "r", stdin);
+    /* MARK END task3 */
     break;
 
   case '|':
