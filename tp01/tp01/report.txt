@@ -18,9 +18,24 @@ Rafael Augusto Botelho Perez <rafael.perez@dcc.ufmg.br> 50%
 
 3. Referências bibliográficas
 
-Adicione aqui as referências bibliográficas.
+exec family of functions in C. Geeks For Geeks. 
+  Disponível em: <https://www.geeksforgeeks.org/exec-family-of-functions-in-c/>. 
+  Acesso em: 10 Set. 2019.
+
+Null-terminated byte strings. CPP Reference. 
+  Disponível em: <https://en.cppreference.com/w/c/string/byte>. 
+  Acesso em: 10 Set. 2019.
+
+comp.lang.c Frequently Asked Questions. C FAQ. 
+  Disponível em: <http://c-faq.com/questions.html>. 
+  Acesso em: 10 Set. 2019.
 
 4. Estruturas de dados
 
-Descreva e justifique as estruturas de dados e algoritmos utilizados
-em sua solução.
+Para trabalhar com as strings em C (bytes terminados com null), utilizamos a 
+biblioteca string.h da C89/C90 standard (ISO/IEC 9899:1990). É a biblioteca
+padrão, então não havia melhor escolha para tal tarefa. Para compreender o 
+funcionamento do exec, lançamos mão do site referência Geeks For Geeks, que 
+exemplificou bem algumas estruturas e nos permitiu explorar essas 
+funcionalidades. Demais dúvidas recorremos também ao C-FAQ.com, que agrupa 
+diversas dúvidas em C da comunidade desenvolvedora.
