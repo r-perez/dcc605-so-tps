@@ -104,7 +104,31 @@ runcmd(struct cmd *cmd)
     /* MARK START task4
      * TAREFA4: Implemente codigo abaixo para executar
      * comando com pipes. */
-    fprintf(stderr, "pipe nao implementado\n");
+    pid_t pid1, pid2;
+    int pipefd[2];
+    pipe(pipefd);
+    pid1 = fork1();
+    if (pid1 == 0) {
+      dup2(pipefd[1], STDOUT_FILENO);
+      close(pipefd[0]);
+      // execvp(argv1[0], argv1);
+      runcmd(pcmd->left);
+      // perror("exec");
+      // return 1;
+    }
+    pid2 = fork();
+    if (pid2 == 0) {
+      dup2(pipefd[0], STDIN_FILENO);
+      close(pipefd[1]);
+      // execvp(argv2[0], argv2);
+      runcmd(pcmd->right);
+      // perror("exec");
+      // return 1;
+    }
+    close(pipefd[0]);
+    close(pipefd[1]);
+    waitpid(pid1, NULL, 0);
+    waitpid(pid2, NULL, 0);
     /* MARK END task4 */
     break;
   }
@@ -135,10 +159,14 @@ main(void)
     /* TAREFA1: O que faz o if abaixo e por que ele é necessário?
      * Insira sua resposta no código e modifique o fprintf abaixo
      * para reportar o erro corretamente. */
-    if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){
+    // Se buf começar com a string "cd "
+    if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){  
+      // Então insere um \0 (terminador de vetor de caracteres) para tornar a 
+      // string dentro dos padrões de C
       buf[strlen(buf)-1] = 0;
+      // chdir tenta mudar de diretório. Se ele der erro, o retorno é negativo
       if(chdir(buf+3) < 0)
-        fprintf(stderr, "reporte erro\n");
+        fprintf(stderr, "Nao foi possivel mudar de diretorio\n");
       continue;
     }
     /* MARK END task1 */
