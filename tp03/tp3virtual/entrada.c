@@ -27,6 +27,9 @@ int strcontains(const char *ls, char *set[], int len)
   return contem;
 }
 
+/*
+  Verifica formato dos parâmetros de entrada do programa.
+*/
 int verificaEntrada(int argc, char *argv[])
 {
   /* 
@@ -113,6 +116,8 @@ void lerArquivo(char *arquivo)
     exit(1);
   }
 
+  //Lê as linhas do arquivo enquanto houverem linhas.
+  //O 2 é a quantidade de parametros lidos com sucesso pelo scanf em cada linha do arquivo
   while(fscanf(file, "%x %c", &addr, &rw) == 2){
     printf("%x %c", addr, rw);
     endl();
