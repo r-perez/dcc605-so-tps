@@ -7,13 +7,6 @@
 // #include <fcntl.h>
 // #include <unistd.h>
 
-/*
-  Pula uma linha no terminal.
-*/
-void endl() {
-  printf("%s", "\n");
-}
-
 int main(int argc, char *argv[])
 {
   // Verifica se a entrada e valida.
