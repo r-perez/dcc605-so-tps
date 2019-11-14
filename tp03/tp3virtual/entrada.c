@@ -95,25 +95,28 @@ int verificaEntrada(int argc, char *argv[])
   return erro;
 }
 
-//lê conteúdo do arquivo de entrada.
-//por enquanto, apenas printa o conteúdo na tela, sema rmazenar em nenhum lugar.
+/*
+  Lê conteúdo do arquivo de entrada.
+  Por enquanto, apenas printa o conteúdo na tela, sem armazenar em nenhum lugar.
+*/
 void lerArquivo(char *arquivo)
 {
-    unsigned addr;
-    char rw;
-    FILE* file;
+  unsigned addr;
+  char rw;
+  FILE* file;
 
-    file = fopen(arquivo, "r");
+  file = fopen(arquivo, "r");
 
-    if(file == NULL)
-    {
-      printf("Error: Falha na abertura do arquivo");
-      exit(1);
-    }
+  if(file == NULL)
+  {
+    printf("Error: Falha na abertura do arquivo");
+    exit(1);
+  }
 
-    while(fscanf(file, "%x %c", &addr, &rw) == 2){
-        printf("%x %c", addr, rw);
-        endl();
-    }
+  while(fscanf(file, "%x %c", &addr, &rw) == 2){
+    printf("%x %c", addr, rw);
+    endl();
+  }
 
+  fclose(file);
 }
