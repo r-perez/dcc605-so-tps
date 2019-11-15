@@ -6,7 +6,7 @@ void setArgs(args* a, char* algoritmo, char* arquivo, int tamPagina, int tamTota
   unsigned s, tmp;
 
   /* Derivar o valor de s: */
-  tmp = tamPagina;
+  tmp = tamPagina * 1024;
   s = 0;
   while (tmp>1) {
     tmp = tmp>>1;

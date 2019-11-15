@@ -91,13 +91,13 @@ int setEntrada(int argc, char *argv[], args* a)
   Lê conteúdo do arquivo de entrada.
   Por enquanto, apenas printa o conteúdo na tela, sem armazenar em nenhum lugar.
 */
-void lerArquivo(char *arquivo)
+void lerArquivo(args* a)
 {
   unsigned addr;
   char rw;
   FILE* file;
 
-  file = fopen(arquivo, "r");
+  file = fopen(a->arquivo, "r");
 
   if(file == NULL)
   {
@@ -110,6 +110,8 @@ void lerArquivo(char *arquivo)
   while(fscanf(file, "%x %c", &addr, &rw) == 2)
   {
     printf("%x %c", addr, rw);
+    endl();
+    printf("Página: %x", addr >> a->s);
     endl();
   }
 

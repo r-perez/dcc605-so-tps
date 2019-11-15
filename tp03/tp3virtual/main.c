@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
   }
 
   //Lê arquivo de entrada.
-  lerArquivo(a->arquivo);
+  lerArquivo(a);
 
   // TODO simular, coletando estatisticas
   printf("%s\n", "Executando o simulador...");
@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
   printStats(s);
 
   //Printa s só pra conferir o valor
-  /* printf("s: %d", a->s);
-  endl(); */
+  printf("s: %d", a->s);
+  endl();
 
   free(a);
   free(s);
