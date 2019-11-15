@@ -8,8 +8,10 @@
 // #include <fcntl.h>
 // #include <unistd.h>
 
-// Testes:
-// valgrind -s ./tp3virtual lru log/teste1.log 4 128
+// Valgrind
+// valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes ./tp3virtual lru log/teste1.log 4 128
+// Valgrind verbose: muita informacao
+// valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./tp3virtual lru log/teste1.log 4 128
 int main(int argc, char *argv[])
 {
   // inicializacao de variaveis
