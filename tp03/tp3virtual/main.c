@@ -1,32 +1,38 @@
-// #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 // #include <string.h>
 #include "entrada.h"
+#include "stats.h"
 // #include <sys/types.h>
 // #include <sys/stat.h>
 // #include <fcntl.h>
 // #include <unistd.h>
 
+// Testes:
+// valgrind -s ./tp3virtual lru log/teste1.log 4 128
 int main(int argc, char *argv[])
 {
+  // inicializacao de variaveis
   args* a;
   a = malloc(sizeof(args));
-  // Verifica se a entrada e valida.
-  if (verificaEntrada(argc, argv, a) != 0)
+  stats* s;
+  s = malloc(sizeof(stats));
+  setStats(s, 0, 0);
+
+  if (setEntrada(argc, argv, a) != 0)
   {
     return 1;
   }
-  printArgs(a);
   // TODO ler arquivo
  	//Lê arquivo de entrada.
-  lerArquivo(argv[2]);
-  // formato arquivo de entrada
-  // endereco de memoria seguido de R ou W
-  // 0785db58 W
-  // 000652d8 R
+  lerArquivo(a->arquivo);
 
   // TODO simular, coletando estatisticas
-  free(a);
+  printf("%s\n", "Executando o simulador...");
+  printArgs(a);
+  printStats(s);
 
+  free(a);
+  free(s);
   return 0;
 }

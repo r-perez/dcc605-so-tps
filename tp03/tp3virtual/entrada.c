@@ -28,10 +28,7 @@ int strcontains(const char *ls, char *set[], int len)
   return contem;
 }
 
-/*
-  Verifica formato dos parâmetros de entrada do programa.
-*/
-int verificaEntrada(int argc, char *argv[], args* a)
+int setEntrada(int argc, char *argv[], args* a)
 {
   int erro = 0;
 
@@ -66,18 +63,22 @@ int verificaEntrada(int argc, char *argv[], args* a)
   }
 
   int arg3 = atoi(argv[3]);
-  int erroArg3ForaDaFaixa = (arg3 < 2 || arg3 > 64);
+  // int erroArg3ForaDaFaixa = (arg3 < 2 || arg3 > 64);
+  int erroArg3ForaDaFaixa = (arg3 < 2);
   if (erroArg3ForaDaFaixa)
   {
-    printf("%s\n", "Erro: Argumento 3 fora da faixa especificada (entre 2 e 64)");
+    // printf("%s\n", "Erro: Argumento 3 fora da faixa especificada (entre 2 e 64)");
+    printf("%s\n", "Erro: Argumento 3 fora da faixa especificada (a partir de 2; recomendado: entre 2 e 64)");
     return ++erro;
   }
 
   int arg4 = atoi(argv[4]);
-  int erroArg4ForaDaFaixa = (arg4 < 128 || arg4 > 16384);
+  // int erroArg4ForaDaFaixa = (arg4 < 128 || arg4 > 16384);
+  int erroArg4ForaDaFaixa = (arg4 < 128);
   if (erroArg4ForaDaFaixa)
   {
-    printf("%s\n", "Erro: Argumento 4 fora da faixa especificada (entre 128 e 16384)");
+    // printf("%s\n", "Erro: Argumento 4 fora da faixa especificada (entre 128 e 16384)");
+    printf("%s\n", "Erro: Argumento 4 fora da faixa especificada (a partir de 128; recomendado: entre 128 e 16384)");
     return ++erro;
   }
 
@@ -100,13 +101,14 @@ void lerArquivo(char *arquivo)
 
   if(file == NULL)
   {
-    printf("Error: Falha na abertura do arquivo");
+    printf("%s\n", "Erro: Falha na abertura do arquivo");
     exit(1);
   }
 
   //Lê as linhas do arquivo enquanto houverem linhas.
   //O 2 é a quantidade de parametros lidos com sucesso pelo scanf em cada linha do arquivo
-  while(fscanf(file, "%x %c", &addr, &rw) == 2){
+  while(fscanf(file, "%x %c", &addr, &rw) == 2)
+  {
     printf("%x %c", addr, rw);
     endl();
   }
