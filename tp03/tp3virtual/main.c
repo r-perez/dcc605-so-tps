@@ -25,8 +25,8 @@ int main(int argc, char *argv[])
   {
     return 1;
   }
-  // TODO ler arquivo
- 	//Lê arquivo de entrada.
+
+  //Lê arquivo de entrada.
   lerArquivo(a->arquivo);
 
   // TODO simular, coletando estatisticas
