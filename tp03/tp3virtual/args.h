@@ -14,6 +14,7 @@ struct argumentos
   char* arquivo;
   int tamPagina;
   int tamTotal;
+  unsigned s;
 };
 
 typedef struct argumentos args;

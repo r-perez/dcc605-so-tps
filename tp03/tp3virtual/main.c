@@ -34,6 +34,10 @@ int main(int argc, char *argv[])
   printArgs(a);
   printStats(s);
 
+  //Printa s só pra conferir o valor
+  /* printf("s: %d", a->s);
+  endl(); */
+
   free(a);
   free(s);
   return 0;
