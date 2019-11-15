@@ -15,13 +15,10 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  // TODO ler arquivo
-  // formato arquivo de entrada
-  // endereco de memoria seguido de R ou W
-  // 0785db58 W
-  // 000652d8 R
-  
+  //Lê arquivo de entrada.
+  lerArquivo(argv[2]);
+
   // TODO simular, coletando estatisticas
-  
+
   return 0;
 }

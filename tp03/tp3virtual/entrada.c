@@ -27,6 +27,9 @@ int strcontains(const char *ls, char *set[], int len)
   return contem;
 }
 
+/*
+  Verifica formato dos parâmetros de entrada do programa.
+*/
 int verificaEntrada(int argc, char *argv[])
 {
   /* 
@@ -93,4 +96,32 @@ int verificaEntrada(int argc, char *argv[])
   }
   
   return erro;
+}
+
+/*
+  Lê conteúdo do arquivo de entrada.
+  Por enquanto, apenas printa o conteúdo na tela, sem armazenar em nenhum lugar.
+*/
+void lerArquivo(char *arquivo)
+{
+  unsigned addr;
+  char rw;
+  FILE* file;
+
+  file = fopen(arquivo, "r");
+
+  if(file == NULL)
+  {
+    printf("Error: Falha na abertura do arquivo");
+    exit(1);
+  }
+
+  //Lê as linhas do arquivo enquanto houverem linhas.
+  //O 2 é a quantidade de parametros lidos com sucesso pelo scanf em cada linha do arquivo
+  while(fscanf(file, "%x %c", &addr, &rw) == 2){
+    printf("%x %c", addr, rw);
+    endl();
+  }
+
+  fclose(file);
 }
