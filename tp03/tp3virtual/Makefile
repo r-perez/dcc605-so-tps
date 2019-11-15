@@ -1,7 +1,8 @@
 TARGET = tp3virtual
 LIBS = -lm
 CC = gcc
-CFLAGS = -g -Wall -Wextra -Werror -pedantic-errors
+# CFLAGS = -g -Wall -Wextra -Werror -pedantic-errors
+CFLAGS = -g -Wall -Wextra -pedantic-errors
 
 .PHONY: default all clean
 
