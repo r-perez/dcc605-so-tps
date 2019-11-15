@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
   args* a;
   a = malloc(sizeof(args));
   // Verifica se a entrada e valida.
-  if (verificaEntrada(argc, argv) != 0)
+  if (verificaEntrada(argc, argv, a) != 0)
   {
     return 1;
   }
