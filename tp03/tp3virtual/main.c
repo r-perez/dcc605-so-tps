@@ -3,6 +3,7 @@
 // #include <string.h>
 #include "entrada.h"
 #include "stats.h"
+#include "page.h"
 // #include <sys/types.h>
 // #include <sys/stat.h>
 // #include <fcntl.h>

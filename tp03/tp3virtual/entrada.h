@@ -11,6 +11,3 @@ int strcontains(const char *ls, char *set[], int len);
 
 //Verifica formato dos parâmetros de entrada do programa e seta valores.
 int setEntrada(int argc, char *argv[], args* a);
-
-//Lê conteúdo do arquivo de entrada.
-void lerArquivo(args* a);
