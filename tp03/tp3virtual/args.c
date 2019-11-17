@@ -8,7 +8,8 @@ void setArgs(args* a, char* algoritmo, char* arquivo, int tamPagina, int tamTota
   /* Derivar o valor de s: */
   tmp = tamPagina * 1024;
   s = 0;
-  while (tmp>1) {
+  while (tmp>1)
+  {
     tmp = tmp>>1;
     s++;
   }

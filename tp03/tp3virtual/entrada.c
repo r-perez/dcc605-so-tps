@@ -6,7 +6,8 @@
 /*
   Pula uma linha no terminal.
 */
-void endl() {
+void endl()
+{
   printf("%s", "\n");
 }
 
