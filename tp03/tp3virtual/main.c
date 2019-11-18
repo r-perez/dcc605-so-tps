@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
   a = malloc(sizeof(args));
   stats* s;
   s = malloc(sizeof(stats));
-  setStats(s, 0, 0);
+  setStats(s);
 
   if (setEntrada(argc, argv, a) != 0)
   {
@@ -34,10 +34,6 @@ int main(int argc, char *argv[])
   printf("%s\n", "Executando o simulador...");
   printArgs(a);
   printStats(s);
-
-  //Printa s só pra conferir o valor
-  printf("s: %d", a->s);
-  endl();
 
   free(a);
   free(s);

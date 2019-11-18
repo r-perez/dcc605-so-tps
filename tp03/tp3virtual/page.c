@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "args.h"
 #include "stats.h"
 #include "page.h"
@@ -32,7 +33,7 @@ void addPage(args* a, stats* s, unsigned addr, int qtde, int pageNumber)
   s->escritas++;
 }
 
-void rePage(args* a, stats* s, unsigned addr)
+void changePage(args* a, stats* s, unsigned addr)
 {
   if(strcmp(a->algoritmo, "lru") == 0){
     //lru(addr);
@@ -46,6 +47,40 @@ void rePage(args* a, stats* s, unsigned addr)
   s->reEscritas++;
 }
 
+bool readPage(args* a, unsigned addr)
+{
+  page *p = a->first, *ant = NULL, *aux = NULL;
+
+  while(p != NULL){
+    if(p->addr == addr){
+
+      if(strcmp(a->algoritmo, "lru") == 0){
+
+        if(ant == NULL){
+          aux = a->first;
+          a->first = a->first->prox;
+          free(aux);
+        } else {
+          if(p->prox != NULL){
+            ant->prox = p->prox;
+          }
+        }
+
+        a->last->prox = p;
+        a->last = p;
+        p->prox = NULL;
+      }
+
+      return true;
+    }
+
+    ant = p;
+    p = p->prox;
+  }
+
+  return false;
+}
+
 /*
   Lê conteúdo do arquivo de entrada.
 */
@@ -53,7 +88,8 @@ void lerArquivo(args* a, stats* s)
 {
   unsigned addr;
   char rw;
-  int pageNumber = 0, qtde = a->tamTotal/a->tamPagina, pageFaults = 0;
+  int pageNumber = 0, qtde = a->tamTotal/a->tamPagina;
+  bool r;
   FILE* file;
 
   file = fopen(a->arquivo, "r");
@@ -71,20 +107,28 @@ void lerArquivo(args* a, stats* s)
     pageNumber = addr >> a->s;
 
     if(rw == 'R'){
-
-    }else if(rw == 'W'){
+      r = readPage(a, addr);
+      if(r){
+        s->acertos++;
+      } else {
+        s->erros++;
+        if(s->usedPages < qtde){
+          addPage(a, s, addr, qtde, pageNumber);
+        }
+        else{
+          s->pageFaults++;
+          changePage(a, s, addr);
+        }
+      }
+    } else if(rw == 'W') {
       if(s->usedPages < qtde){
         addPage(a, s, addr, qtde, pageNumber);
       }
       else{
-        pageFaults++;
-        rePage(a, s, addr);
+        s->pageFaults++;
+        changePage(a, s, addr);
       }
     }
-
-    //printf("%x %c\n", addr, rw);
-    //printf("Página: %d\n", pageNumber);
-    //printf("%d\n", page[pageNumber]);
   }
 
   fclose(file);

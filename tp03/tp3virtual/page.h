@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 typedef struct page {
     unsigned addr;
@@ -9,9 +10,11 @@ typedef struct page {
     struct page* prox;
 } page;
 
-void rePage(args* a, stats* s, unsigned addr);
-
 void addPage(args* a, stats* s, unsigned addr, int qtde, int pageNumber);
+
+void changePage(args* a, stats* s, unsigned addr);
+
+bool readPage(args* a, unsigned addr);
 
 //Lê conteúdo do arquivo de entrada.
 void lerArquivo(args* a, stats* s);
