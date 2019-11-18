@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 #include "args.h"
 #include "stats.h"
 #include "page.h"
@@ -44,8 +45,10 @@ void lerArquivo(args* a, stats* s)
           changePage(a, s, addr, qtde, pageNumber);
         }
       }
+      s->leituras++;
     //Escrita de endereço
     } else if(rw == 'W') {
+      //s->escritas++;
       if(s->usedPages < qtde){
         addPage(a, s, addr, qtde, pageNumber);
       }
@@ -91,8 +94,9 @@ void addPage(args* a, stats* s, unsigned addr, int qtde, int pageNumber)
 
 void changePage(args* a, stats* s, unsigned addr, int qtde, int pageNumber)
 {
+  //Aplica politicas de substituição
   if(strcmp(a->algoritmo, "random") == 0){
-
+    randomP(a, s, addr, pageNumber);
   } else {
     temporal(a, s, addr, qtde, pageNumber);
   }
@@ -145,6 +149,26 @@ void temporal(args* a, stats*s, unsigned addr, int qtde, int pageNumber)
     a->first = a->first->prox;
     free(aux);
   }
+}
+
+void randomP(args* a, stats* s, unsigned addr, int pageNumber)
+{
+  int n;
+  page *p = a->first;
+
+  s->escritas++;
+
+  //Nova seed para cada execução
+  srand(time(NULL));
+  n = rand() % s->usedPages;
+
+  for(int i = 0; i < n; i++){
+    p = p->prox;
+  }
+
+  p->addr = addr;
+  p->pageNumber = pageNumber;
+  p->time = s->timer;
 }
 
 void freePages(args* a){

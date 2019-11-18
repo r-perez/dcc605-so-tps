@@ -25,5 +25,8 @@ bool readPage(args* a, unsigned addr);
 //Aplica politicas temporais
 void temporal(args* a, stats*s, unsigned addr, int qtde, int pageNumber);
 
+//Aplica politica randomica
+void randomP(args* a, stats* s, unsigned addr, int pageNumber);
+
 //Desaloca paginas
 void freePages(args* a);

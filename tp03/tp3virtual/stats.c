@@ -15,5 +15,8 @@ void setStats(stats* s)
 
 void printStats(stats* s)
 {
-  printf("Paginas lidas: %d\nPaginas escritas: %d\n", s->pageFaults, s->reEscritas);
+  printf("Total de acessos: %d\n", s->timer);
+  printf("Operações de leitura: %d\nOperações de escrita: %d\n", s->leituras, s->escritas);
+  printf("Hits: %d\nMisses: %d\n", s->acertos, s->erros);
+  printf("Writebacks: %d\n", s->reEscritas);
 }

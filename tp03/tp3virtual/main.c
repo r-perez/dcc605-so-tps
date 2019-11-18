@@ -27,11 +27,11 @@ int main(int argc, char *argv[])
     return 1;
   }
 
+  printf("%s\n", "Executando o simulador...");
+
   //Lê arquivo de entrada.
   lerArquivo(a, s);
 
-  // TODO simular, coletando estatisticas
-  printf("%s\n", "Executando o simulador...");
   printArgs(a);
   printStats(s);
 
