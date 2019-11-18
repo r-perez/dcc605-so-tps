@@ -32,14 +32,13 @@ int strcontains(const char *ls, char *set[], int len)
 int setEntrada(int argc, char *argv[], args* a)
 {
   int erro = 0;
-
-  int erroQtdParametros = (argc != 5);
+  int erroQtdParametros = (argc < 5 || argc > 6);
   if (erroQtdParametros)
   {
-    printf("%s\n", "Erro: Quantidade de argumentos invalida");
+    printf("%s\n%s\n", "Erro: Quantidade de argumentos invalida, insira 4 ou 5 argumentos", \
+    "Para usar o modo debug, adicione o numero 1 como ultimo argumento");
     return ++erro;
   }
-
   char *arg1 = argv[1];
   char *arg1Validos[] = {"lru", "2a", "fifo", "random"};
   int erroArg1Invalido = (strcontains(arg1, arg1Validos, 4) != 0);
@@ -54,7 +53,6 @@ int setEntrada(int argc, char *argv[], args* a)
     endl();
     return ++erro;
   }
-
   char *arg2 = argv[2];
   int erroArg2Invalido = (strlen(arg2) < 1);
   if (erroArg2Invalido)
@@ -62,7 +60,6 @@ int setEntrada(int argc, char *argv[], args* a)
     printf("%s\n", "Erro: Nome de arquivo invalido");
     return ++erro;
   }
-
   int arg3 = atoi(argv[3]);
   // int erroArg3ForaDaFaixa = (arg3 < 2 || arg3 > 64);
   int erroArg3ForaDaFaixa = (arg3 < 2);
@@ -72,7 +69,6 @@ int setEntrada(int argc, char *argv[], args* a)
     printf("%s\n", "Erro: Argumento 3 fora da faixa especificada (a partir de 2; recomendado: entre 2 e 64)");
     return ++erro;
   }
-
   int arg4 = atoi(argv[4]);
   // int erroArg4ForaDaFaixa = (arg4 < 128 || arg4 > 16384);
   int erroArg4ForaDaFaixa = (arg4 < 128);
@@ -82,8 +78,12 @@ int setEntrada(int argc, char *argv[], args* a)
     printf("%s\n", "Erro: Argumento 4 fora da faixa especificada (a partir de 128; recomendado: entre 128 e 16384)");
     return ++erro;
   }
-
-  setArgs(a, arg1, arg2, arg3, arg4);
-
+  // Modo debug
+  int arg5 = 0;
+  if (argc == 6)
+  {
+    arg5 = atoi(argv[5]);
+  }
+  setArgs(a, arg1, arg2, arg3, arg4, arg5);
   return erro;
 }

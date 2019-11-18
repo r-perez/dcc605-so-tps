@@ -4,6 +4,7 @@ struct argumentos
   char* arquivo;
   int tamPagina;
   int tamTotal;
+  int modoDebug;
   unsigned s;
   struct page* first;
   struct page* last;
@@ -11,6 +12,6 @@ struct argumentos
 
 typedef struct argumentos args;
 
-void setArgs(args* a, char* algoritmo, char* arquivo, int tamPagina, int tamTotal);
+void setArgs(args* a, char* algoritmo, char* arquivo, int tamPagina, int tamTotal, int modoDebug);
 
 void printArgs(args* a);

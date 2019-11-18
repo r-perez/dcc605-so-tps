@@ -14,53 +14,53 @@ void lerArquivo(args* a, stats* s)
   int pageNumber = 0, qtde = a->tamTotal/a->tamPagina;
   bool r;
   FILE* file;
-
   //Abre arquivo de entrada
   file = fopen(a->arquivo, "r");
-
-  if(file == NULL){
+  if (file == NULL)
+  {
     printf("%s\n", "Erro: Falha na abertura do arquivo");
     exit(1);
   }
-
   //Lê as linhas do arquivo enquanto houverem linhas.
   while(fscanf(file, "%x %c", &addr, &rw) == 2)
   {
     s->timer++;
-
     pageNumber = addr >> a->s;
-
     //Leitura de endereço
-    if(rw == 'R'){
+    if(rw == 'R')
+    {
       r = readPage(a, addr);
-      if(r){
+      if(r)
+      {
         s->acertos++;
-      } else {
+      } else
+      {
         s->erros++;
-        if(s->usedPages < qtde){
+        if(s->usedPages < qtde)
+        {
           addPage(a, s, addr, qtde, pageNumber);
-        }
-        else{
+        } else
+        {
           s->pageFaults++;
           changePage(a, s, addr, qtde, pageNumber);
         }
       }
       s->leituras++;
     //Escrita de endereço
-    } else if(rw == 'W') {
+    } else if(rw == 'W')
+    {
       //s->escritas++;
-      if(s->usedPages < qtde){
+      if(s->usedPages < qtde)
+      {
         addPage(a, s, addr, qtde, pageNumber);
-      }
-      else{
+      } else
+      {
         s->pageFaults++;
         changePage(a, s, addr, qtde, pageNumber);
       }
     }
   }
-
   fclose(file);
-
   freePages(a);
 }
 
@@ -68,13 +68,12 @@ void addPage(args* a, stats* s, unsigned addr, int qtde, int pageNumber)
 {
   //Aloca nova pagina
   page *p = (page*)malloc(sizeof(page));
-
   p->addr = addr;
   p->pageNumber = pageNumber;
   p->time = s->timer;
   p->prox = NULL;
-
-  switch(s->usedPages){
+  switch (s->usedPages)
+  {
     case 0:
       a->first = p;
       a->last = a->first;
@@ -84,67 +83,66 @@ void addPage(args* a, stats* s, unsigned addr, int qtde, int pageNumber)
       a->last = p;
       break;
   }
-
-  if(s->usedPages < qtde){
+  if (s->usedPages < qtde)
+  {
     s->usedPages++;
   }
-
   s->escritas++;
 }
 
 void changePage(args* a, stats* s, unsigned addr, int qtde, int pageNumber)
 {
   //Aplica politicas de substituição
-  if(strcmp(a->algoritmo, "random") == 0){
+  if(strcmp(a->algoritmo, "random") == 0)
+  {
     randomP(a, s, addr, pageNumber);
-  } else {
+  } else
+  {
     temporal(a, s, addr, qtde, pageNumber);
   }
-
   s->reEscritas++;
 }
 
 bool readPage(args* a, unsigned addr)
 {
   page *p = a->first, *ant = NULL, *aux = NULL;
-
   //Procura endereço na tabela
-  while(p != NULL){
-    if(p->addr == addr){
-
-      if(strcmp(a->algoritmo, "lru") == 0){
-
+  while(p != NULL)
+  {
+    if(p->addr == addr)
+    {
+      if(strcmp(a->algoritmo, "lru") == 0)
+      {
         //Reposiciona elemento na lista para aplicação de lru
-        if(ant == NULL){
+        if (ant == NULL)
+        {
           aux = a->first;
           a->first = a->first->prox;
           free(aux);
-        } else {
-          if(p->prox != NULL){
+        } else
+        {
+          if (p->prox != NULL)
+          {
             ant->prox = p->prox;
           }
         }
-
         a->last->prox = p;
         a->last = p;
         p->prox = NULL;
       }
-
       return true;
     }
-
     ant = p;
     p = p->prox;
   }
-
   return false;
 }
 
 void temporal(args* a, stats*s, unsigned addr, int qtde, int pageNumber)
 {
   addPage(a, s, addr, qtde, pageNumber);
-
-  if(s->usedPages == qtde){
+  if (s->usedPages == qtde)
+  {
     page *aux = a->first;
     a->first = a->first->prox;
     free(aux);
@@ -153,27 +151,26 @@ void temporal(args* a, stats*s, unsigned addr, int qtde, int pageNumber)
 
 void randomP(args* a, stats* s, unsigned addr, int pageNumber)
 {
-  int n;
+  int n, i;
   page *p = a->first;
-
   s->escritas++;
-
   //Nova seed para cada execução
   srand(time(NULL));
   n = rand() % s->usedPages;
-
-  for(int i = 0; i < n; i++){
+  for (i = 0; i < n; i++)
+  {
     p = p->prox;
   }
-
   p->addr = addr;
   p->pageNumber = pageNumber;
   p->time = s->timer;
 }
 
-void freePages(args* a){
+void freePages(args* a)
+{
   page* p = a->first;
-  while(p != NULL){
+  while (p != NULL)
+  {
     a->first = a->first->prox;
     free(p);
     p = a->first;
