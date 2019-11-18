@@ -18,6 +18,8 @@ void setArgs(args* a, char* algoritmo, char* arquivo, int tamPagina, int tamTota
   a->tamTotal = tamTotal;
   a->modoDebug = modoDebug;
   a->s = s;
+  a->first = NULL;
+  a->last = NULL;
 }
 
 void printArgs(args* a)
