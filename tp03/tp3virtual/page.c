@@ -5,24 +5,29 @@
 #include "stats.h"
 #include "page.h"
 
-void addPage(args* a, stats* s, unsigned addr, int qtde)
+void addPage(args* a, stats* s, unsigned addr, int qtde, int pageNumber)
 {
   page *p = (page*)malloc(sizeof(page));
 
   p->addr = addr;
-
+  p->pageNumber = pageNumber;
+  p->time = s->timer;
   p->prox = NULL;
 
-  if(s->usedPages != 0){
-    a->last->prox = p;
-    a->last = p;
-  } else {
-    a->first = p;
-    a->last = a->first;
+  switch(s->usedPages){
+    case 0:
+      a->first = p;
+      a->last = a->first;
+      break;
+    default:
+      a->last->prox = p;
+      a->last = p;
+      break;
   }
 
-  if(s->usedPages < qtde)
+  if(s->usedPages < qtde){
     s->usedPages++;
+  }
 
   s->escritas++;
 }
@@ -62,11 +67,14 @@ void lerArquivo(args* a, stats* s)
   while(fscanf(file, "%x %c", &addr, &rw) == 2)
   {
     s->timer++;
+
+    pageNumber = addr >> a->s;
+
     if(rw == 'R'){
 
     }else if(rw == 'W'){
       if(s->usedPages < qtde){
-        addPage(a, s, addr, qtde);
+        addPage(a, s, addr, qtde, pageNumber);
       }
       else{
         pageFaults++;
