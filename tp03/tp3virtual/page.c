@@ -78,7 +78,7 @@ void lerArquivo(args* a, stats* s)
       }
       else{
         pageFaults++;
-        rePage(a, addr);
+        rePage(a, s, addr);
       }
     }
 
