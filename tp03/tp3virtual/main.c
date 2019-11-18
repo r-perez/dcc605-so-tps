@@ -27,37 +27,8 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  //Page table. Memória Física.
-  //Duvida
-  //Nao sei se é assim msm q tem q declarar essas tabelas.
-  //Na especificação fala sobre uma estrutura de quadros fisicos, mas eu nao faço ideia de como fazer.
-  //Tbm n sei se tem q usar TLB ou se só uma tabela de paginas resolve.
-  int page[a->tamPagina*1024];
-  int fisica[a->tamTotal*1024];
-  int i;
-  for (i = 0; i < a->tamPagina*1024; i++)
-  {
-    page[i] = -1;
-  }
-  for (i = 0; i < a->tamTotal*1024; i++)
-  {
-    fisica[i] = -1;
-  }
-
-  //Duvida
-  //Pagina em formato de struct. Acho q nao vai ser necessario.
-  //Talvez seja necessario fazer algo assim na repesentação dos quadros fisicos (ta escrito na especificação)
-  /*
-  pgt* page[a->tamPagina];
-  for(int i = 0; i < a->tamPagina; i++)
-  {
-    printf("a\n");
-    page[i] = malloc(sizeof(pgt));
-  }
-  */
-
   //Lê arquivo de entrada.
-  lerArquivo(a, page, fisica);
+  lerArquivo(a, s);
 
   // TODO simular, coletando estatisticas
   printf("%s\n", "Executando o simulador...");

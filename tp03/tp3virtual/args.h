@@ -15,6 +15,8 @@ struct argumentos
   int tamPagina;
   int tamTotal;
   unsigned s;
+  struct page* first;
+  struct page* last;
 };
 
 typedef struct argumentos args;

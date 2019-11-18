@@ -1,17 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "entrada.h"
+#include "args.h"
 #include "stats.h"
+#include "page.h"
+
+void addPage(args* a, stats* s, unsigned addr, int qtde)
+{
+  page *p = (page*)malloc(sizeof(page));
+
+  p->addr = addr;
+
+  p->prox = NULL;
+
+  if(s->usedPages != 0){
+    a->last->prox = p;
+    a->last = p;
+  } else {
+    a->first = p;
+    a->last = a->first;
+  }
+
+  if(s->usedPages < qtde)
+    s->usedPages++;
+
+  s->escritas++;
+}
+
+void rePage(args* a, stats* s, unsigned addr)
+{
+  if(strcmp(a->algoritmo, "lru") == 0){
+    //lru(addr);
+  }
+  else if(strcmp(a->algoritmo, "fifo") == 0){
+    //fifo(addr);
+  }
+  else if(strcmp(a->algoritmo, "random") == 0){
+    //random(addr);
+  }
+  s->reEscritas++;
+}
 
 /*
   Lê conteúdo do arquivo de entrada.
 */
-void lerArquivo(args* a, int* page, int* fisica)
+void lerArquivo(args* a, stats* s)
 {
   unsigned addr;
   char rw;
-  int pageNumber = 0;
+  int pageNumber = 0, qtde = a->tamTotal/a->tamPagina, pageFaults = 0;
   FILE* file;
 
   file = fopen(a->arquivo, "r");
@@ -24,22 +61,21 @@ void lerArquivo(args* a, int* page, int* fisica)
   //Lê as linhas do arquivo enquanto houverem linhas.
   while(fscanf(file, "%x %c", &addr, &rw) == 2)
   {
-    //Duvida
-    //Esse é o método escrito na especificação pra descobrir a pagina correspondente à uma endereço.
-    //Porém, creio q esse nao seja o indice da pagina direto na tabela de paginas, pq os números são mto grandes.
-    //Se vc da page[pageNumber] quase sempre da Seg Fault.
-    //Pode ser q tenha um jeito de descobrir o indice mas eu n faço ideia de como é.
-    pageNumber = addr >> a->s;
+    s->timer++;
+    if(rw == 'R'){
 
-    //Checa tabela de paginas
-    /* if(page[pageNumber] == -1){
+    }else if(rw == 'W'){
+      if(s->usedPages < qtde){
+        addPage(a, s, addr, qtde);
+      }
+      else{
+        pageFaults++;
+        rePage(a, addr);
+      }
+    }
 
-    } */
-
-    printf("%x %c", addr, rw);
-    endl();
-    printf("Página: %d", pageNumber);
-    endl();
+    //printf("%x %c\n", addr, rw);
+    //printf("Página: %d\n", pageNumber);
     //printf("%d\n", page[pageNumber]);
   }
 
