@@ -6,8 +6,64 @@
 #include "stats.h"
 #include "page.h"
 
+void lerArquivo(args* a, stats* s)
+{
+  unsigned addr;
+  char rw;
+  int pageNumber = 0, qtde = a->tamTotal/a->tamPagina;
+  bool r;
+  FILE* file;
+
+  //Abre arquivo de entrada
+  file = fopen(a->arquivo, "r");
+
+  if(file == NULL){
+    printf("%s\n", "Erro: Falha na abertura do arquivo");
+    exit(1);
+  }
+
+  //Lê as linhas do arquivo enquanto houverem linhas.
+  while(fscanf(file, "%x %c", &addr, &rw) == 2)
+  {
+    s->timer++;
+
+    pageNumber = addr >> a->s;
+
+    //Leitura de endereço
+    if(rw == 'R'){
+      r = readPage(a, addr);
+      if(r){
+        s->acertos++;
+      } else {
+        s->erros++;
+        if(s->usedPages < qtde){
+          addPage(a, s, addr, qtde, pageNumber);
+        }
+        else{
+          s->pageFaults++;
+          changePage(a, s, addr, qtde, pageNumber);
+        }
+      }
+    //Escrita de endereço
+    } else if(rw == 'W') {
+      if(s->usedPages < qtde){
+        addPage(a, s, addr, qtde, pageNumber);
+      }
+      else{
+        s->pageFaults++;
+        changePage(a, s, addr, qtde, pageNumber);
+      }
+    }
+  }
+
+  fclose(file);
+
+  freePages(a);
+}
+
 void addPage(args* a, stats* s, unsigned addr, int qtde, int pageNumber)
 {
+  //Aloca nova pagina
   page *p = (page*)malloc(sizeof(page));
 
   p->addr = addr;
@@ -33,17 +89,14 @@ void addPage(args* a, stats* s, unsigned addr, int qtde, int pageNumber)
   s->escritas++;
 }
 
-void changePage(args* a, stats* s, unsigned addr)
+void changePage(args* a, stats* s, unsigned addr, int qtde, int pageNumber)
 {
-  if(strcmp(a->algoritmo, "lru") == 0){
-    //lru(addr);
+  if(strcmp(a->algoritmo, "random") == 0){
+
+  } else {
+    temporal(a, s, addr, qtde, pageNumber);
   }
-  else if(strcmp(a->algoritmo, "fifo") == 0){
-    //fifo(addr);
-  }
-  else if(strcmp(a->algoritmo, "random") == 0){
-    //random(addr);
-  }
+
   s->reEscritas++;
 }
 
@@ -51,11 +104,13 @@ bool readPage(args* a, unsigned addr)
 {
   page *p = a->first, *ant = NULL, *aux = NULL;
 
+  //Procura endereço na tabela
   while(p != NULL){
     if(p->addr == addr){
 
       if(strcmp(a->algoritmo, "lru") == 0){
 
+        //Reposiciona elemento na lista para aplicação de lru
         if(ant == NULL){
           aux = a->first;
           a->first = a->first->prox;
@@ -81,55 +136,22 @@ bool readPage(args* a, unsigned addr)
   return false;
 }
 
-/*
-  Lê conteúdo do arquivo de entrada.
-*/
-void lerArquivo(args* a, stats* s)
+void temporal(args* a, stats*s, unsigned addr, int qtde, int pageNumber)
 {
-  unsigned addr;
-  char rw;
-  int pageNumber = 0, qtde = a->tamTotal/a->tamPagina;
-  bool r;
-  FILE* file;
+  addPage(a, s, addr, qtde, pageNumber);
 
-  file = fopen(a->arquivo, "r");
-
-  if(file == NULL){
-    printf("%s\n", "Erro: Falha na abertura do arquivo");
-    exit(1);
+  if(s->usedPages == qtde){
+    page *aux = a->first;
+    a->first = a->first->prox;
+    free(aux);
   }
+}
 
-  //Lê as linhas do arquivo enquanto houverem linhas.
-  while(fscanf(file, "%x %c", &addr, &rw) == 2)
-  {
-    s->timer++;
-
-    pageNumber = addr >> a->s;
-
-    if(rw == 'R'){
-      r = readPage(a, addr);
-      if(r){
-        s->acertos++;
-      } else {
-        s->erros++;
-        if(s->usedPages < qtde){
-          addPage(a, s, addr, qtde, pageNumber);
-        }
-        else{
-          s->pageFaults++;
-          changePage(a, s, addr);
-        }
-      }
-    } else if(rw == 'W') {
-      if(s->usedPages < qtde){
-        addPage(a, s, addr, qtde, pageNumber);
-      }
-      else{
-        s->pageFaults++;
-        changePage(a, s, addr);
-      }
-    }
+void freePages(args* a){
+  page* p = a->first;
+  while(p != NULL){
+    a->first = a->first->prox;
+    free(p);
+    p = a->first;
   }
-
-  fclose(file);
 }

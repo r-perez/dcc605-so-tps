@@ -10,11 +10,20 @@ typedef struct page {
     struct page* prox;
 } page;
 
-void addPage(args* a, stats* s, unsigned addr, int qtde, int pageNumber);
-
-void changePage(args* a, stats* s, unsigned addr);
-
-bool readPage(args* a, unsigned addr);
-
 //Lê conteúdo do arquivo de entrada.
 void lerArquivo(args* a, stats* s);
+
+//Adiciona nova pagina
+void addPage(args* a, stats* s, unsigned addr, int qtde, int pageNumber);
+
+//Aplica politicas de substituição
+void changePage(args* a, stats* s, unsigned addr, int qtde, int pageNumber);
+
+//Realiza leitura de endereços
+bool readPage(args* a, unsigned addr);
+
+//Aplica politicas temporais
+void temporal(args* a, stats*s, unsigned addr, int qtde, int pageNumber);
+
+//Desaloca paginas
+void freePages(args* a);
