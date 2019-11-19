@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "entrada.h"
 #include <string.h>
-#include "args.h"
 
 /*
   Pula uma linha no terminal.

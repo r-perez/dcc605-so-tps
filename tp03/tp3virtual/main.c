@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "entrada.h"
-#include "stats.h"
-#include "page.h"
 
 int main(int argc, char *argv[])
 {
