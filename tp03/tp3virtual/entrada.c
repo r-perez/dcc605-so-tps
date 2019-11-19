@@ -33,8 +33,9 @@ int setEntrada(int argc, char *argv[], args* a)
   int erroQtdParametros = (argc < 5 || argc > 6);
   if (erroQtdParametros)
   {
-    printf("%s\n%s\n", "Erro: Quantidade de argumentos invalida, insira 4 ou 5 argumentos", \
-    "Para usar o modo debug, adicione o numero 1 como ultimo argumento");
+    printf("%s\n%s\n%s\n", "Erro: Quantidade de argumentos invalida, insira 4 ou 5 argumentos", \
+    "Para usar o modo debug, adicione o numero 1 como ultimo argumento para ver leitura e escrita",\
+    "Ou, adicione 2 para somente leitura, e 3 para somente escrita");
     return ++erro;
   }
   char *arg1 = argv[1];
@@ -78,9 +79,18 @@ int setEntrada(int argc, char *argv[], args* a)
   }
   // Modo debug
   int arg5 = 0;
+  int erroModoDebug;
   if (argc == 6)
   {
     arg5 = atoi(argv[5]);
+    erroModoDebug = (arg5 < 0 || arg5 > 3);
+    if (erroModoDebug)
+    {
+      printf("%s\n%s\n%s\n", "Erro: Argumento 5 deve ser: 0 (desativado), 1, 2 ou 3", \
+      "Para usar o modo debug, adicione o numero 1 como ultimo argumento para ver leitura e escrita",\
+      "Ou, adicione 2 para somente leitura, e 3 para somente escrita");
+      return ++erro;
+    }
   }
   setArgs(a, arg1, arg2, arg3, arg4, arg5);
   return erro;

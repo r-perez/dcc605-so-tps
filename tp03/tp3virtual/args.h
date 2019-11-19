@@ -42,3 +42,7 @@ void randomP(args* a, stats* s, unsigned addr, int pageNumber);
 
 //Desaloca paginas
 void freePages(args* a);
+
+//Modo debug.
+//1 = imprime leitura e escrita, 2 = imprime apenas leitura, 3 = imprime apenas escrita
+void printDebug(args* a, unsigned addr, char rw);

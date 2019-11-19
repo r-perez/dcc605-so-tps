@@ -28,6 +28,17 @@ void printArgs(args* a)
   printf("Arquivo de entrada: %s\nTamanho da memoria: %d KB\nTamanho das páginas: %d KB\nTecnica de reposicao: %s\n", a->arquivo, a->tamTotal, a->tamPagina, a->algoritmo);
 }
 
+void printDebug(args* a, unsigned addr, char rw)
+{
+  bool printAll = (a->modoDebug == 1);
+  bool printR = (a->modoDebug == 2 && rw == 'R');
+  bool printW = (a->modoDebug == 3 && rw == 'W');
+  if (printAll || printR || printW)
+  {
+    printf("DEBUG: Endereco %x %c\n", addr, rw);
+  }
+}
+
 void lerArquivo(args* a, stats* s)
 {
   unsigned addr;
@@ -67,6 +78,7 @@ void lerArquivo(args* a, stats* s)
         }
       }
       s->leituras++;
+      printDebug(a, addr, rw);
     //Escrita de endereço
     } else if(rw == 'W')
     {
@@ -110,6 +122,7 @@ void addPage(args* a, stats* s, unsigned addr, int qtde, int pageNumber)
     s->usedPages++;
   }
   s->escritas++;
+  printDebug(a, addr, 'W');
 }
 
 void changePage(args* a, stats* s, unsigned addr, int qtde, int pageNumber)
@@ -176,6 +189,7 @@ void randomP(args* a, stats* s, unsigned addr, int pageNumber)
   int n, i;
   page *p = a->first;
   s->escritas++;
+  printDebug(a, addr, 'W');
   //Nova seed para cada execução
   srand(time(NULL));
   n = rand() % s->usedPages;
